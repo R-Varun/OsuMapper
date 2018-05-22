@@ -21,8 +21,10 @@ osuAbs = join(songPath, osuFile)
 rate, data = get_mp3(mp3Abs)
 live2Dance = Song(rate, data)
 
+bm = create_beatmap(osuAbs)
 
-
+print(bm.Notes)
+print(bm.AudioFilename)
 
 live2Dance.write_beat_to_wav(3578, window= 100)
 

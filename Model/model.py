@@ -1,8 +1,4 @@
-
-# Documented here: https://osu.ppy.sh/help/wiki/osu!_File_Formats/Osu_(file_format)
-
-
-class TimingPoint:
+#OSU file format Documented here: https://osu.ppy.sh/help/wiki/osu!_File_Formats/Osu_(file_format)
 
 
 class BeatMap:
@@ -18,25 +14,34 @@ class BeatMap:
 	OverallDifficulty = None
 	ApproachRate = None
 
-	def __init__(self, ):
-
-
-
-
-
+	def __init__(self, **kwargs):
+		self.HPDrainRate = kwargs["HPDrainRate"]
+		self.CircleSize = kwargs["CircleSize"]
+		self.OverallDifficulty = kwargs["OverallDifficulty"]
+		self.AudioFilename = kwargs["AudioFilename"]
+		self.Mode = kwargs["Mode"]
+		self.Notes = kwargs["Notes"]
 
 
 
 
 
 class HitCircle:
-	def __init__(self, x, y, ms, hitsound):
+	def __init__(self, x, y, ms, hitsound, new_combo):
 		self.x = x
 		self.y = y
 		self.ms = ms
 		self.hitsound = hitsound
+		self.new_combo = new_combo
 
 
+
+
+# TODO: Sliders currently just hit-circles
 class Slider:
-
-	def __init__(self, x, y, ms ):
+	def __init__(self, x, y, ms, hitsound, new_combo):
+		self.x = x
+		self.y = y
+		self.ms = ms
+		self.hitsound = hitsound
+		self.new_combo = new_combo
