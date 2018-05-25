@@ -22,7 +22,6 @@ class Song:
 		index_before = int(max(0, index - (window//2 * (self.rate / 1000))))
 		index_after = int(min(index +  (window//2 * (self.rate / 1000)), len(self.data)))
 
-		print(index, index_after, index_before, self.rate)
 		beat_data = self.data[index_before:index_after]
 
 		return self.rate, beat_data

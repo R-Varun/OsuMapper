@@ -15,7 +15,7 @@ def join(*f):
 
 
 
-
+# Parses a .osu file and creates a BeatMap object
 def create_beatmap(filePath):
 
 	f = open(filePath, "r")
@@ -26,13 +26,15 @@ def create_beatmap(filePath):
 	general = {}
 	hitObs = []
 
-
 	for line in lines:
 		cur_line = line.strip()
 		if cur_line.startswith("[") and cur_line.endswith("]"):
 			cur_heading = cur_line[1:-1]
 			continue
 		if len(cur_line) == 0:
+			continue
+
+		if cur_line.startswith("//"):
 			continue
 
 		if cur_heading == "General":
@@ -47,6 +49,33 @@ def create_beatmap(filePath):
 			temp = cur_line.split(":")
 			values = temp[0].strip(), float(temp[1].strip())
 			general[values[0]] = values[1]
+
+
+
+
+		if cur_heading == "Editor":
+			temp = cur_line.split(":")
+
+			values = temp[0].strip(), temp[1].strip()
+			if values[0] == 'Bookmarks':
+				# creates list of integers for Bookmakes
+				intList = map(lambda x : int(x.strip()), values[1].split(","))
+				general[values[0]] = intList
+
+			elif values[0] == 'DistanceSpacing':
+				general[values[0]] = float(values[1])
+
+			else:
+				general[values[0]] = int(values[1])
+
+
+		if cur_heading == "Metadata":
+			temp = cur_line.split(":")
+
+			values = temp[0].strip(), temp[1].strip()
+			general[values[0]] = values[1]
+
+
 
 
 		if cur_heading == "HitObjects":
@@ -68,10 +97,17 @@ def create_beatmap(filePath):
 				pass
 				newObj = Slider(x, y, time, hs, newCombo)
 
+			if is_bit_on(mode, BIT_SPINNER):
+				pass
+				newObj = Slider(x, y, time, hs, newCombo)
+
 			hitObs.append(newObj)
+
+
 
 	general["Notes"] = hitObs
 
+	# Uses unpacked kwargs to create BeatMap Object
 	return BeatMap(**general)
 
 

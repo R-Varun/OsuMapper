@@ -3,6 +3,7 @@ import os
 from Model.utils import *
 from Sound.utils import *
 from Sound.song import *
+import matplotlib.pyplot as plt
 
 
 OSU_SONG_FILE = "C:/Users/Varun/AppData/Local/osu!/Songs"
@@ -22,9 +23,11 @@ rate, data = get_mp3(mp3Abs)
 live2Dance = Song(rate, data)
 
 bm = create_beatmap(osuAbs)
-
-print(bm.Notes)
 print(bm.AudioFilename)
-
-live2Dance.write_beat_to_wav(3578, window= 100)
-
+#
+#
+# rate, data = live2Dance.get_beat(3578, window=50)
+# show_waveform(data, condense_rate=30)
+#
+# rate, data = live2Dance.get_beat(3978, window=50)
+# show_waveform(data, condense_rate=30)
