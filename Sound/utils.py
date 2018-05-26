@@ -25,6 +25,15 @@ def get_mp3(filePath):
 	return rate, data
 
 
+def get_adaptive(filePath):
+	ending = filePath[-3:]
+	if  ending == "mp3":
+		return get_mp3(filePath)
+	elif ending == "wav":
+		return get_wav(filePath)
+
+
+
 def write_wave(rate, data, file = DEFAULT_OUTFILE):
 	scipy.io.wavfile.write(file, rate, data)
 
@@ -41,3 +50,34 @@ def show_waveform(data, condense_rate=500):
 	c = np.mean(np.mean(data, axis=1).reshape(-1, condense_rate), axis=1)
 	plt.plot(np.arange(len(c)), c)
 	plt.show()
+
+def show_waveform_by_bpm(rate, data, mbps, offset, divisions = 4):
+	points = []
+	window = 10
+	init = int(offset  * (rate / 1000))
+	trav = int(mbps / divisions * (rate / 1000))
+	for i in range(init, len(data), trav):
+		index_before = int(max(0, i - (window // 2 * (rate / 1000))))
+		index_after = int(min(i + (window // 2 * (rate / 1000)), len(data)))
+
+		x = abs(np.mean(np.mean(data[index_before: index_after], axis=1)))
+
+
+
+		points.append(x)
+
+	points = np.array(points)
+
+	print(points)
+	x = np.convolve(points, [-.5, 1, -.5], 'same')
+	y = x > .5
+
+	plt.plot(np.arange(len(points)) * mbps / divisions + offset, y)
+	plt.xticks(np.arange(len(points)) * mbps / divisions + offset)
+	plt.show()
+
+	plt.plot(np.arange(len(points)) * mbps / divisions + offset, x)
+	plt.xticks(np.arange(len(points)) * mbps / divisions + offset)
+	plt.show()
+
+

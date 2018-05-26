@@ -8,7 +8,13 @@ class Song:
 	default_window = 50
 	default_out = "out.wav"
 
-	def __init__(self, rate, data, def_window = default_window, def_out = default_out):
+	def __init__(self,filePath= None, rate = None, data = None, def_window = default_window, def_out = default_out):
+
+		if filePath != None and rate == None and data == None:
+			rate, data = get_adaptive(filePath)
+		if rate == None:
+			raise Exception("Must provide either rate and data or filepath!")
+
 		self.rate = rate
 		self.data = data
 		self.default_window = def_window
@@ -29,4 +35,6 @@ class Song:
 	def write_beat_to_wav(self, ms, file=default_out, window= default_window):
 		rate, data = self.get_beat(ms, window)
 		write_wave(rate, data, file = file)
+
+
 

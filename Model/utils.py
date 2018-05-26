@@ -24,8 +24,9 @@ def create_beatmap(filePath):
 	cur_heading = None
 
 	general = {}
-	hitObs = []
 
+	general["Notes"] = []
+	general["Timing"] = []
 	for line in lines:
 		cur_line = line.strip()
 		if cur_line.startswith("[") and cur_line.endswith("]"):
@@ -101,11 +102,24 @@ def create_beatmap(filePath):
 				pass
 				newObj = Slider(x, y, time, hs, newCombo)
 
-			hitObs.append(newObj)
+			general["Notes"].append(newObj)
+
+		if cur_heading == "TimingPoints":
+			offset, mspb, meter, sset, sindex, volume, inhereted, kiai = cur_line.split(",")
+			model = {
+				"Offset": int(offset),
+				"Mspb": float(mspb),
+				"Meter": int(meter),
+				"Sset": int(sset),
+				"Sindex": int(sindex),
+				"Volume": int(volume),
+				"Inherited": int(inhereted),
+				"Kiai": int(kiai)
+			}
+			tp = TimingPoint(**model)
+			general["Timing"].append(tp)
 
 
-
-	general["Notes"] = hitObs
 
 	# Uses unpacked kwargs to create BeatMap Object
 	return BeatMap(**general)
@@ -118,3 +132,6 @@ def create_beatmap(filePath):
 def is_bit_on(someInt, n):
 	x = someInt >> n
 	return x % 2 == 1
+
+
+
