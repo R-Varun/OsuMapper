@@ -21,11 +21,22 @@ class Random_Mutate(Mutate_Function):
 		total_set = set(np.arange(len(pop)))
 
 		other_elements = total_set.difference(element_set)
+		new_mutant_pop = pop[ns]
 
-		new_mutant_pop = np.take(pop, ns, axis=1)
-		other_pop = np.take(pop, list(other_elements), axis = 1)
+		for entry in new_mutant_pop:
+			for element in entry:
+				if np.random.uniform() < self.percent_element:
+					element.x = random.randint(0, 640)
+					element.y = random.randint(0, 480)
+					element.isNote = random.randint(0, 1)
 
-		return np.concatenate(new_mutant_pop, other_pop)
+
+
+		other_pop = pop[list(other_elements)]
+
+
+		new_mutant_pop = np.vstack((other_pop, new_mutant_pop))
+		return new_mutant_pop
 
 
 

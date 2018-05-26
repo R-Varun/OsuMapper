@@ -14,6 +14,9 @@ class GA_Note:
 		self.y = y
 		self.isNote = isNote
 
+	def __repr__(self):
+		return "GANOTE: {}, {}, {}".format(str(self.x), str(self.y), str(self.isNote))
+
 
 
 def random_enc_note(max_dx = MAX_WIDTH, max_dy = MAX_HEIGHT):
@@ -39,15 +42,6 @@ def distance(x1, y1, x2, y2):
 	return ((x2 - x1) ** 2 + (y2 - y1) ** 2)**.5
 
 
-# Randomly splits a and B across a single point
-def Single_Point_Crossover(a, b):
-	random_index = random.randint(0, len(a) - 1)
-
-
-	child1 = a[0:random_index] + b[random_index:]
-	child2 = b[0:random_index] + a[random_index:]
-
-	return [child1, child2]
 
 
 

@@ -6,6 +6,7 @@ from Sound.song import *
 from GA.GeneticAlgorithm import *
 from GA.utils import *
 from GA.Fitness_Function import *
+from GA.Crossover_Function import *
 from GA.Mutate_Function import *
 import matplotlib.pyplot as plt
 
@@ -33,10 +34,9 @@ song = Song(join(songPath, bm.AudioFilename))
 
 print(bm.Timing[0].to_string())
 
-g = GA(100, 100, FF_Close(50, 20),Random_Mutate(.1,.5))
+g = GA(300, 100, FF_Close(50, 20),crossover_function=Single_Point_Crossover(.1), mutate_function = Random_Mutate(.2,.5))
 
-g.resample()
-g.mutate()
+g.train()
 
 
 
