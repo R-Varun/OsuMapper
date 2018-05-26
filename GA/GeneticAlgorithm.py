@@ -1,6 +1,6 @@
 # TODO: get model working before attempting- to solve problems with encoding
 from GA.utils import *
-
+import pickle
 CROSSOVER_POPULATION = .1
 
 class GA:
@@ -31,23 +31,37 @@ class GA:
 
 
 
-	def train(self):
+	def train(self,iterations=500, save_every=1000, save_filepath = "out.pickle"):
 
-		for i in range(3000):
+		training_iterations = 0
+		while True:
 			self.cross_over()
 			if not isinstance(self.best, type(None)):
 				self.population = np.vstack((self.population, self.best))
 			self.resample(self.population_size)
 			self.mutate()
 
-			print(self.best_fitness)
+			if training_iterations % save_every == 0:
+				with open(save_filepath, 'wb') as handle:
+					pickle.dump(self.best, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+			if training_iterations % 10 == 0:
+				print("FITNESS SCORE: " + str(self.best_fitness), "ITERATIONS: " + str(training_iterations))
 			# print(self.population.shape)
+
+			if iterations == -1:
+				continue
+			elif training_iterations >= iterations:
+				break
+			# INC Counter
+			training_iterations+= 1
 
 
 
 
 	def resample(self, size):
 		prob = np.apply_along_axis(lambda x : self.fitness_function.eval(x), 1, self.population)
+		prob[prob < 0] = 0
 		best_arr = np.argmax(prob, axis= 0)
 		if self.best_fitness == None:
 			self.best_fitness = prob[best_arr]

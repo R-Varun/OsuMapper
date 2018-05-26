@@ -38,6 +38,11 @@ class Random_Mutate(Mutate_Function):
 		new_mutant_pop = np.vstack((other_pop, new_mutant_pop))
 		return new_mutant_pop
 
+# Small test to see if they work
+if __name__ == "__main__":
 
+	s = Random_Mutate(1,.5)
+	p = np.array([[GA_Note(0,0,1), GA_Note(0,0,1), GA_Note(0,0,1)]])
 
-
+	p2 = s.mutate(p)
+	print(p2)

@@ -9,22 +9,58 @@ class Fitness_Function:
 
 class FF_Close(Fitness_Function):
 
-	def __init__(self, proximity, reward):
+	def __init__(self, proximity, reward, smoothing=10):
+
+		self.smoothing = smoothing
 		self.proximity = proximity
 		self.reward = reward
 	def eval(self, entry):
 		score = 0
+		entry = np.array(list(filter(lambda x : x.isNote == 1, entry)))
+		# print(entry)
 		for i in range(1, len(entry)):
 			cur_note = entry[i]
 			prev_note = entry[i - 1]
-			if distance(cur_note.x, cur_note.y, prev_note.x, prev_note.y) < self.proximity:
-				score += self.reward
+			dist = distance(cur_note.x, cur_note.y, prev_note.x, prev_note.y)
+			if dist < 1:
+				score = self.reward
+			if  dist < self.proximity:
+				const = (self.proximity/ dist)
+
+				score += (self.reward * const) / (const + 10)
 		return score
 
+# Placement on likely beats
+class FF_REWARD_PLACEMENT:
+	def __init__(self, reward_template):
+		self.reward_template = reward_template
 
-def FF_REWARD_PLACEMENT(notes, reward_template):
-	pass
+	def eval(self, entry):# Trim template to be same length as each pop entry
+		if len(entry) == 0:
+			return 0
+		cur_template = self.reward_template[0:len(entry)]
 
+
+		cur_item = np.array(list(map(lambda x : x.isNote, entry)))
+		weighted = cur_item * cur_template
+		score = np.sum(weighted)
+
+		return score
+
+class FF_REWARD_PLACEMENT:
+	def __init__(self, reward_template):
+		self.reward_template = reward_template
+
+	def eval(self, entry):  # Trim template to be same length as each pop entry
+		if len(entry) == 0:
+			return 0
+		cur_template = self.reward_template[0:len(entry)]
+
+		cur_item = np.array(list(map(lambda x: x.isNote, entry)))
+		weighted = cur_item * cur_template
+		score = np.sum(weighted)
+
+		return score
 
 
 # Apply multiple fitness functions with differing weights

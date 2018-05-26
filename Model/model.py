@@ -167,7 +167,7 @@ class TimingPoint:
 
 
 class HitCircle:
-	def __init__(self, x, y, ms, hitsound, new_combo):
+	def __init__(self, x, y, ms, hitsound=0, new_combo=0):
 		self.x = x
 		self.y = y
 		self.ms = ms
@@ -175,7 +175,7 @@ class HitCircle:
 		self.new_combo = new_combo
 
 	def to_string(self):
-		retStr = "{},{},{},{},{},{}".format(str(self.x), str(self.y), str(self.ms), str(self.new_combo * 4 + 1 * 1), str(self.hitsound), "0:0:0:0:")
+		retStr = "{},{},{},{},{},{}".format(str(self.x), str(self.y), round(self.ms,2), str(self.new_combo * 4 + 1 * 1), str(self.hitsound), "0:0:0:0:")
 		return retStr
 
 

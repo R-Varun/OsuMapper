@@ -38,5 +38,11 @@ class Single_Point_Crossover:
 
 
 
+# Small test to see if they work
+if __name__ == "__main__":
 
+	s = Single_Point_Crossover(1)
+	p = np.array([[GA_Note(0,0,1), GA_Note(0,0,1), GA_Note(0,0,1)],[GA_Note(1,1,1), GA_Note(1,1,1), GA_Note(1,1,1)]])
 
+	p2 = s.cross(p)
+	print(p2)

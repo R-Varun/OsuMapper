@@ -51,7 +51,7 @@ def show_waveform(data, condense_rate=500):
 	plt.plot(np.arange(len(c)), c)
 	plt.show()
 
-def show_waveform_by_bpm(rate, data, mbps, offset, divisions = 4):
+def get_likely_beats(rate, data, mbps, offset, divisions = 4, show=False):
 	points = []
 	window = 10
 	init = int(offset  * (rate / 1000))
@@ -61,23 +61,18 @@ def show_waveform_by_bpm(rate, data, mbps, offset, divisions = 4):
 		index_after = int(min(i + (window // 2 * (rate / 1000)), len(data)))
 
 		x = abs(np.mean(np.mean(data[index_before: index_after], axis=1)))
-
-
-
 		points.append(x)
 
 	points = np.array(points)
 
-	print(points)
+	# print(points)
 	x = np.convolve(points, [-.5, 1, -.5], 'same')
 	y = x > .5
 
-	plt.plot(np.arange(len(points)) * mbps / divisions + offset, y)
-	plt.xticks(np.arange(len(points)) * mbps / divisions + offset)
-	plt.show()
+	if show:
+		plt.plot(np.arange(len(points)) * mbps / divisions + offset, x)
+		plt.xticks(np.arange(len(points)) * mbps / divisions + offset)
+		plt.show()
 
-	plt.plot(np.arange(len(points)) * mbps / divisions + offset, x)
-	plt.xticks(np.arange(len(points)) * mbps / divisions + offset)
-	plt.show()
-
+	return x
 
