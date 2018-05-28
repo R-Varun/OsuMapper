@@ -19,3 +19,5 @@ Nearly completed parsing for `.osu` files (being able to write back to them as w
 Python 3.XX with SciPy installed. FFmeg is also used in a separate process to convert `.mp3` to `.wav`. Make sure to have FFmpeg in path so that the script can access it.
 
 
+## Approach
+For the GA, I've modelled the problem as at each time step of the BPM (or in code, Miliseconds per beat (Mspb)), there's a GANote object. Thus the

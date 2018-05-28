@@ -53,7 +53,7 @@ def show_waveform(data, condense_rate=500):
 
 def get_likely_beats(rate, data, mbps, offset, divisions = 4, show=False):
 	points = []
-	window = 10
+	window = 50
 	init = int(offset  * (rate / 1000))
 	trav = int(mbps / divisions * (rate / 1000))
 	for i in range(init, len(data), trav):

@@ -28,16 +28,12 @@ def convertBestToNotes(GA_notes, mpbs, offset):
 
 
 
-OSU_SONG_FILE = "./"
-SONGNAME = "79363 DJ THT meets Scarlet - Live 2 Dance (Nightcore Mix)"
+OSU_SONG_FILE = "C:/Users/Varun/AppData/Local/osu!/Songs/427508 Wagakki Band - Senbonzakura [no video]"
+SONGNAME = "Wagakki Band - Senbonzakura (pkk) [Insane].osu"
 
-songPath = "./"
+osuAbs =os.path.join(OSU_SONG_FILE, SONGNAME)
 
-# Extremely lazy indexing, fix me later
-osuFile = os.listdir(songPath)[list(map(lambda x : ".osu" in x, os.listdir(songPath))).index(True)]
-
-osuAbs = join(songPath, osuFile)
-
+print(osuAbs)
 bm = create_beatmap(osuAbs)
 bm.Creator = "Svvag"
 bm.write_to_file("./oo.osu")
@@ -46,40 +42,26 @@ print(bm.Timing[0].Mspb)
 
 
 #
-song = Song(join(songPath, bm.AudioFilename))
+song = Song(join(OSU_SONG_FILE, bm.AudioFilename))
 
 
 print(bm.Timing[0].to_string())
 
-# g = GA(1000, 100, FF_Close(50, 20),crossover_function=Single_Point_Crossover(.4), mutate_function = Random_Mutate(.2,.1))
-#
-# g.train()
 
 
-
-
-
-
-
-
-# print(bpm)
-# for i in range(10):
-# 	cur = off + i * bpm
-# 	song.write_beat_to_wav(cur, window=100, file="output" + str(c) + ".wav")
-# 	c+= 1
-# show_waveform(song.data, condense_rate=(song.rate))
 beats = get_likely_beats(song.rate, song.data[:int(len(song.data) / 20)], bm.Timing[0].Mspb,bm.Timing[0].Offset, divisions=4)
-
-
-
 ff1 = FF_REWARD_PLACEMENT(beats)
-# ff2 = FF_Close(50, 20)
-# f= FF_Composite([ff1, ff2], [.7, .3])
+ff2 = FF_Close(50, 20)
+f= FF_Composite([ff1, ff2], [.3, .7])
 
 #
-g = GA(50, 50, ff1,crossover_function=Single_Point_Crossover(.4), mutate_function = Random_Mutate(.3,.1))
 
-g.train(iterations=10000)
+
+co = Uniform_Crossover(.4, .5)
+co2 = Single_Point_Crossover(.4)
+g = GA(100, 77, f,crossover_function=co, mutate_function = Random_Mutate(.3,.1))
+
+g.train(iterations=1000)
 
 best = g.best
 #
@@ -94,7 +76,7 @@ bm.Notes = notes
 bm.Creator = "Svvag"
 bm.Version = "SVVVAGSANE"
 
-bm.write_to_file("ClariS - Connect (Holoaz) [svvag].osu")
+bm.write_to_file("Wagakki Band - Senbonzakura (pkk) [Svvag].osu")
 
 
 

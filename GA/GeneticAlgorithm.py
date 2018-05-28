@@ -59,7 +59,7 @@ class GA:
 
 
 
-	def resample(self, size):
+	def resample(self, size, choose_best_proportion = .5):
 		prob = np.apply_along_axis(lambda x : self.fitness_function.eval(x), 1, self.population)
 		prob[prob < 0] = 0
 		best_arr = np.argmax(prob, axis= 0)
@@ -72,7 +72,11 @@ class GA:
 
 		prob = prob / np.sum(prob)
 
-		ns = np.random.choice(np.arange(len(self.population)), size, p = prob, replace=True)
+		num_best = int(choose_best_proportion * size)
+		rest = size - num_best
+		ns = np.random.choice(np.arange(len(self.population)), num_best , p = prob, replace=True)
+		other = np.random.choice(np.arange(len(self.population)), rest , replace=False)
+		ns = np.concatenate((ns, other))
 
 		self.population = self.population[ns]
 

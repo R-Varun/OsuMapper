@@ -24,7 +24,7 @@ class FF_Close(Fitness_Function):
 			dist = distance(cur_note.x, cur_note.y, prev_note.x, prev_note.y)
 			if dist < 1:
 				score = self.reward
-			if  dist < self.proximity:
+			elif  dist < self.proximity:
 				const = (self.proximity/ dist)
 
 				score += (self.reward * const) / (const + 10)
@@ -52,10 +52,11 @@ class FF_REWARD_PLACEMENT:
 		self.reward_template = reward_template
 
 	def eval(self, entry):  # Trim template to be same length as each pop entry
+		# print(entry.shape)
 		if len(entry) == 0:
 			return 0
 		cur_template = self.reward_template[0:len(entry)]
-
+		# print(cur_template.shape)
 		cur_item = np.array(list(map(lambda x: x.isNote, entry)))
 		weighted = cur_item * cur_template
 		score = np.sum(weighted)

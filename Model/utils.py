@@ -18,7 +18,7 @@ def join(*f):
 # Parses a .osu file and creates a BeatMap object
 def create_beatmap(filePath):
 
-	f = open(filePath, "r")
+	f = open(filePath, "r",  encoding='utf-8')
 	lines = f.readlines()
 
 	cur_heading = None
@@ -63,7 +63,7 @@ def create_beatmap(filePath):
 				intList = map(lambda x : int(x.strip()), values[1].split(","))
 				general[values[0]] = intList
 
-			elif values[0] == 'DistanceSpacing':
+			elif values[0] == 'DistanceSpacing' or values[0]=="TimelineZoom":
 				general[values[0]] = float(values[1])
 
 			else:
