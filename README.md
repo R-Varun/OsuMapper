@@ -20,4 +20,4 @@ Python 3.XX with SciPy installed. FFmeg is also used in a separate process to co
 
 
 ## Approach
-For the GA, I've modelled the problem as at each time step of the BPM (or in code, Miliseconds per beat (Mspb)), there's a GANote object. Thus the
+For the GA, I've modelled the problem as at each time step of the BPM (or in code, Milliseconds per beat (Mspb)), there's a GANote object. At every division of a measure, we make a decision on whether there is a note there or not and additionally where the note is placed.
